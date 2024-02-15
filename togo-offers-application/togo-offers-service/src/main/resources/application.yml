@@ -1,0 +1,57 @@
+---
+# Application info
+info:
+  app:
+    name: Offers Application
+    description: A starting point for conversations with students around Spring boot micro-services.
+
+# General Spring configuration
+spring:
+  application:
+    name: togo-offers-service
+  main:
+    banner-mode: "off"
+  jackson:
+    default-property-inclusion: NON_EMPTY
+    deserialization:
+      fail-on-unknown-properties: false   # Allow unexpected JSON properties in requests – they will be silently ignored.
+    serialization:
+      write-dates-as-timestamps: false    # We want Java 8 date, and date-times, written as formatted strings like yyyy-MM-dd and not as JSON objects.
+  datasource:
+    url: jdbc:h2:mem:test
+    driverClassName: org.h2.Driver
+    username: ${random.uuid} # impossible to guess admin username
+    password: ${random.uuid} # impossible to guess admin password
+  jpa:
+    database: h2
+    generate-ddl: off
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none
+  h2:
+    console:
+      enabled: true
+      path: /h2-offers-console
+      settings:
+        web-allow-others: true
+
+springdoc:
+  swagger-ui:
+    queryConfigEnabled: true
+
+# The base path for the Spring Actuator APIs
+management:
+  endpoint.health.show-details: "always"
+  endpoints.enabled-by-default: true
+  endpoints.web.exposure.include: "*"
+  endpoints.jmx.exposure.include: "*"
+
+# Configuration for Logback.
+logging:
+  config: classpath:logback-spring.xml
+
+logging.level.org.hibernate.SQL: DEBUG
+logging.level.org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+

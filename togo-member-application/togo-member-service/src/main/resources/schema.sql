@@ -1,0 +1,45 @@
+-- Create a read-only (select) user to view database state in running application.
+DROP USER IF EXISTS guest;
+CREATE USER guest PASSWORD 'guest';
+
+-- The default schema in H2 is 'PUBLIC'.
+GRANT SELECT ON SCHEMA PUBLIC TO guest;
+
+
+DROP SEQUENCE IF EXISTS MEMBER_ID_SEQUENCE;
+CREATE SEQUENCE MEMBER_ID_SEQUENCE
+    START WITH 111100
+    INCREMENT BY 100;
+
+DROP TABLE IF EXISTS PROGRAM CASCADE;
+CREATE TABLE PROGRAM
+(
+    PROGRAM_ID          VARCHAR(8)   NOT NULL COMMENT 'A surrogate primary key id, instead of the name.' PRIMARY KEY CHECK REGEXP_LIKE(PROGRAM_ID, '^[A-Z_-]{2,8}$'),
+    PROGRAM_NAME        VARCHAR(20)  NOT NULL COMMENT 'A unique name of the program' UNIQUE CHECK REGEXP_LIKE(PROGRAM_NAME, '^[0-9a-zA-Z -]{2,20}$'),
+    PROGRAM_DESCRIPTION VARCHAR(200) NOT NULL COMMENT 'A description describing the program.' CHECK REGEXP_LIKE(PROGRAM_DESCRIPTION, '^[0-9a-zA-Z '',.-]{2,200}$')
+);
+COMMENT ON TABLE PROGRAM IS 'Loyalty Programs that a loyalty member may be enrolled into';
+CREATE INDEX PROGRAM_INDEX ON PROGRAM (PROGRAM_NAME);
+
+
+DROP TABLE IF EXISTS MEMBER CASCADE;
+CREATE TABLE MEMBER
+(
+    MEMBER_ID      IDENTITY    NOT NULL COMMENT 'The loyalty member id.' PRIMARY KEY,
+    ACCOUNT_STATUS VARCHAR(10) NOT NULL COMMENT 'The account status of the member' CHECK REGEXP_LIKE(ACCOUNT_STATUS, '^(PENDING|ACTIVE|SUSPENDED)$'),
+    GIVEN_NAME     VARCHAR(50) NOT NULL COMMENT 'The member‘s given (first) name',
+    SURNAME        VARCHAR(50) NOT NULL COMMENT 'The member‘s surname',
+    ADDRESS        JSON COMMENT 'Address.',
+    ENROLLED_SINCE DATE        NOT NULL COMMENT 'The date from which the member has been enrolled in the program.',
+    PREFERENCE     VARCHAR(20) NOT NULL COMMENT 'The category of this offer' CHECK REGEXP_LIKE(PREFERENCE, '^(CITY|BEACH|NATURE|SNOW|MOUNTAIN)$')
+);
+COMMENT ON TABLE MEMBER IS 'Member account information ';
+
+DROP TABLE IF EXISTS MEMBER_PROGRAM CASCADE;
+CREATE TABLE MEMBER_PROGRAM
+(
+    MEMBER_ID  BIGINT     NOT NULL COMMENT 'The loyalty member id.',
+    PROGRAM_ID VARCHAR(8) NOT NULL COMMENT 'The loyalty program id.',
+    CONSTRAINT PK_MEMBER_PROGRAM PRIMARY KEY (MEMBER_ID, PROGRAM_ID)
+);
+COMMENT ON TABLE MEMBER_PROGRAM IS 'Member program relationship.';

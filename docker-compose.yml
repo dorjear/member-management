@@ -1,0 +1,62 @@
+version: "3.7"
+
+services:
+  togo-member-service:
+    image: maven:3.8.3-openjdk-17
+    ports:
+      - 8080:8080
+      - 5005:5005
+    volumes:
+      - .:/app
+      - ${M2_PATH:-~/.m2}:/root/.m2
+    working_dir: /app
+    environment:
+      # Skip some maven steps to speed up build for docker-compose
+      MAVEN_OPTS: |
+        -Dcheckstyle.skip=true
+        -Djacoco.skip=true
+        -Dsonar.skip=true
+        -Dmaven.javadoc.skip=true 
+        -Dmaven.source.skip=true
+        -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+    entrypoint:
+      - bash
+      - -c
+    command: >
+      "
+      mvn --file togo-common/pom.xml install &&
+      mvn --file togo-member-application/togo-member-client/pom.xml install &&
+      mvn --file togo-member-application/togo-member-service/pom.xml spring-boot:run
+      "
+    depends_on:
+      - togo-offers-service
+
+  togo-offers-service:
+    image: maven:3.8.3-openjdk-17
+    ports:
+      - 8081:8080
+      - 5006:5006
+    volumes:
+      - .:/app
+      - ${M2_PATH:-~/.m2}:/root/.m2
+    working_dir: /app
+    environment:
+      # Skip some maven steps to speed up build for docker-compose
+      MAVEN_OPTS: |
+        -Dcheckstyle.skip=true
+        -Djacoco.skip=true
+        -Dsonar.skip=true
+        -Dmaven.javadoc.skip=true 
+        -Dmaven.source.skip=true
+        -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006"
+    entrypoint:
+      - bash
+      - -c
+    command: >
+      "
+      mvn --file togo-common/pom.xml install &&
+      mvn --file togo-offers-application/togo-offers-client/pom.xml install &&
+      mvn --file togo-offers-application/togo-offers-service/pom.xml spring-boot:run
+      "
+
+

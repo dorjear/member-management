@@ -1,0 +1,44 @@
+[
+  {
+    "id": 220010,
+    "name": "Beach Holidays",
+    "description": "Getaway this summer to Pacific Island locations.",
+    "category": "BEACH"
+  },
+  {
+    "id": 220011,
+    "name": "Blossom Festival",
+    "description": "Enjoy the Spring blossoms in a variety of Asian locations.",
+    "category": "NATURE"
+  },
+  {
+    "id": 220012,
+    "name": "Autumn Leaves",
+    "description": "Enjoy the autumn leaves of Canada.",
+    "category": "NATURE"
+  },
+  {
+    "id": 220013,
+    "name": "Ski Slopes",
+    "description": "Pack your warm skis and snowboards for a snow adventure.",
+    "category": "SNOW"
+  },
+  {
+    "id": 220014,
+    "name": "Rome",
+    "description": "Step into a modern city loaded with history.",
+    "category": "CITY"
+  },
+  {
+    "id": 220015,
+    "name": "New York",
+    "description": "Get ready for days in Central Park and nights on Broadway.",
+    "category": "CITY"
+  },
+  {
+    "id": 220016,
+    "name": "Alpine Trekking",
+    "description": "Head off for summer hiking in the Swiss Alps.",
+    "category": "MOUNTAIN"
+  }
+]

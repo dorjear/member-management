@@ -1,0 +1,10 @@
+---
+# Set the Spring 'local' profile if you are running the applications directly.
+# That is, you are NOT running them in docker-compose
+
+server:
+  port: 8080
+
+feign:
+  togo-offers-client:
+    url: http://localhost:8081

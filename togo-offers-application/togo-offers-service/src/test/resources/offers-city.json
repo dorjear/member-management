@@ -1,0 +1,14 @@
+[
+  {
+    "id": 220014,
+    "name": "Rome",
+    "description": "Step into a modern city loaded with history.",
+    "category": "CITY"
+  },
+  {
+    "id": 220015,
+    "name": "New York",
+    "description": "Get ready for days in Central Park and nights on Broadway.",
+    "category": "CITY"
+  }
+]

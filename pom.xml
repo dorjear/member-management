@@ -1,0 +1,265 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.dorjear.training.loyalty</groupId>
+  <artifactId>togo-develop-test</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>togo-develop-test</name>
+  <description>A small student test application</description>
+
+  <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.release>17</maven.compiler.release>
+    <maven.compiler.parameters>true</maven.compiler.parameters>
+
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+    <spring.boot.version>2.6.4</spring.boot.version>
+    <spring.cloud.version>2021.0.1</spring.cloud.version>
+    <lombok.version>1.18.24</lombok.version>
+    <swagger.annotations.version>2.1.13</swagger.annotations.version>
+    <sprindoc.openapi.version>1.6.6</sprindoc.openapi.version>
+    <h2.database.version>2.1.212</h2.database.version>
+    <hypersistence.version>3.7.0</hypersistence.version>
+  </properties>
+
+  <modules>
+    <module>togo-common</module>
+    <module>togo-member-application</module>
+    <module>togo-offers-application</module>
+  </modules>
+
+  <dependencyManagement>
+    <dependencies>
+
+      <dependency>
+        <!-- Import dependency management from Spring Boot -->
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring.boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <!-- Import dependency management from Spring cloud -->
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring.cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
+      </dependency>
+
+      <dependency>
+        <!-- Provide OpenAPI 3 Swagger annotations -->
+        <groupId>io.swagger.core.v3</groupId>
+        <artifactId>swagger-annotations</artifactId>
+        <version>${swagger.annotations.version}</version>
+      </dependency>
+
+      <dependency>
+        <!-- Provide OpenAPI 3 UI - /v3/api-docs -->
+        <groupId>org.springdoc</groupId>
+        <artifactId>springdoc-openapi-ui</artifactId>
+        <version>${sprindoc.openapi.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <version>${h2.database.version}</version>
+        <scope>runtime</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>com.dorjear.training.loyalty</groupId>
+        <artifactId>togo-common</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.dorjear.training.loyalty</groupId>
+        <artifactId>togo-member-client</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.dorjear.training.loyalty</groupId>
+        <artifactId>togo-member-service</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.dorjear.training.loyalty</groupId>
+        <artifactId>togo-offers-client</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.dorjear.training.loyalty</groupId>
+        <artifactId>togo-offers-service</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.hypersistence</groupId>
+        <artifactId>hypersistence-utils-hibernate-55</artifactId>
+        <version>${hypersistence.version}</version>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <version>${spring.boot.version}</version>
+          <executions>
+            <execution>
+              <id>spring-boot-build-info</id>
+              <goals>
+                <!-- Creates a 'META-INF/build-info.properties' file -->
+                <goal>build-info</goal>
+              </goals>
+              <phase>generate-resources</phase>
+              <configuration>
+                <additionalProperties>
+                  <description>${project.description}</description>
+                  <originCode>${project.artifactId}</originCode>
+                  <encodingSource>${project.build.sourceEncoding}</encodingSource>
+                  <encodingReporting>${project.reporting.outputEncoding}</encodingReporting>
+                  <javaSource>${java.version}</javaSource>
+                  <javaTarget>${java.version}</javaTarget>
+                </additionalProperties>
+              </configuration>
+            </execution>
+            <execution>
+              <id>spring-boot-repackage</id>
+              <goals>
+                <!-- Produces a complete jar with nested jars -->
+                <goal>repackage</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.10.1</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M6</version>
+        <configuration>
+          <forkCount>1C</forkCount>
+          <reuseForks>true</reuseForks>
+          <includes>
+            <include>**/Test*.java</include>
+            <include>**/*Test.java</include>
+            <include>**/*Test_*.java</include>
+            <include>**/*Tests.java</include>
+            <include>**/*Tests_*.java</include>
+            <include>**/*TestCase.java</include>
+            <include>**/*TestCases.java</include>
+          </includes>
+          <argLine>
+            @{argLine}
+            <!-- Set max-heap via argLine to enable running of Jacoco coverage reports -->
+            -Xmx640m
+            <!-- Setting these for surefire and failsafe plugins to execute unit and integration tests.
+            This allow access to restricted methods for test frameworks like Mockito, Assertions, etc.
+            We may be able to remove this in the future when the frameworks are updated to do things differently.
+            Or we could look at rewriting the failing tests.
+            These options became necessary when we started using JDK 16. -->
+            --add-opens java.base/java.lang.invoke=ALL-UNNAMED
+          </argLine>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>3.0.0-M6</version>
+        <configuration>
+          <forkCount>1C</forkCount>
+          <reuseForks>true</reuseForks>
+          <includes>
+            <include>**/IT*.java</include>
+            <include>**/*IT_*.java</include> <!-- For tests like SomeControllerIT_subsetOfTests-->
+            <include>**/*IT.java</include>
+            <include>**/*ITCase.java</include>
+          </includes>
+          <additionalClasspathElements>
+            <additionalClasspathElement>${basedir}/target/classes</additionalClasspathElement>
+          </additionalClasspathElements>
+          <argLine>
+            @{argLine}
+            <!-- Set max-heap via argLine to enable running of Jacoco coverage reports -->
+            -Xmx640m
+            <!-- Setting these for surefire and failsafe plugins to execute unit and integration tests.
+            This allow access to restricted methods for test frameworks like Mockito, Assertions, etc.
+            We may be able to remove this in the future when the frameworks are updated to do things differently.
+            Or we could look at rewriting the failing tests.
+            These options became necessary when we started using JDK 16. -->
+            --add-opens java.base/java.lang.invoke=ALL-UNNAMED
+          </argLine>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.8</version>
+        <executions>
+          <execution>
+            <id>pre-unit-test</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>post-unit-test</id>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>pre-integration-test</id>
+            <goals>
+              <goal>prepare-agent-integration</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>post-integration-test</id>
+            <goals>
+              <goal>report-integration</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+</project>

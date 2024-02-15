@@ -1,0 +1,7 @@
+
+logging:
+  config: classpath:logback-test.xml
+
+spring:
+    main:
+        banner-mode: 'off'
