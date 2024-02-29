@@ -64,6 +64,10 @@ feign:
   togo-offers-client:
     url: http://togo-offers-service:8080
 
+downstrea:
+  agify:
+    basePath: https://api.agify.io/?name=
+
 logging.level.org.hibernate.SQL: DEBUG
 logging.level.org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 

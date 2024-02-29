@@ -1,5 +1,6 @@
 package com.dorjear.training.loyalty.member.service;
 
+import com.dorjear.training.loyalty.member.downstream.AgifyClient;
 import com.dorjear.training.loyalty.member.repository.MemberProgramRepository;
 import com.dorjear.training.loyalty.member.repository.MemberRepository;
 import com.dorjear.training.loyalty.member.repository.ProgramRepository;
@@ -37,16 +38,21 @@ public class MemberService {
 
   private final OfferClient offerClient;
 
+  private final AgifyClient agifyClient;
+
   @Autowired
   public MemberService(
       final MemberRepository memberRepository,
       final ProgramRepository programRepository,
       final MemberProgramRepository memberProgramRepository,
-      final OfferClient offerClient) {
+      final AgifyClient agifyClient,
+      final OfferClient offerClient
+  ) {
 
     this.memberRepository = memberRepository;
     this.programRepository = programRepository;
     this.memberProgramRepository = memberProgramRepository;
+    this.agifyClient = agifyClient;
     this.offerClient = offerClient;
   }
 
@@ -126,6 +132,9 @@ public class MemberService {
 
     final List<Offer> offers = offerClient.getOffers(foundMemberEntity.getOfferCategoryPreference());
 
+    final Integer age = agifyClient.getAgeByFirstName(foundMemberEntity.getGivenName());
+    log.info("The age is " + age);
+
     final List<Member.Offer> memberOffers = offers.stream()
         .map(o -> Member.Offer.builder()
             .id(o.getId())
@@ -140,6 +149,7 @@ public class MemberService {
         .enrolledPrograms(enrolledPrograms)
         .firstName(foundMemberEntity.getGivenName())
         .lastName(foundMemberEntity.getSurname())
+        .age(age)
         .address(foundMemberEntity.getAddress())
         .memberSince(foundMemberEntity.getEnrolledSince())
         .offerCategoryPreference(foundMemberEntity.getOfferCategoryPreference())

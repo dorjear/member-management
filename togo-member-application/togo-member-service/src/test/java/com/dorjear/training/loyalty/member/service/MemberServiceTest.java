@@ -14,6 +14,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 import com.dorjear.training.loyalty.api.ResourceNotFoundException;
+import com.dorjear.training.loyalty.member.downstream.AgifyClient;
 import com.dorjear.training.loyalty.member.repository.MemberProgramRepository;
 import com.dorjear.training.loyalty.member.repository.MemberRepository;
 import com.dorjear.training.loyalty.member.repository.ProgramRepository;
@@ -45,6 +46,9 @@ class MemberServiceTest {
   MemberProgramRepository memberProgramRepository;
 
   @Mock
+  AgifyClient agifyClient;
+
+  @Mock
   OfferClient offerClient;
 
   MemberService memberService;
@@ -55,6 +59,7 @@ class MemberServiceTest {
         memberRepository,
         programRepository,
         memberProgramRepository,
+        agifyClient,
         offerClient
     );
   }

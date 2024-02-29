@@ -38,11 +38,13 @@ public class Member {
   public Member(
       @JsonProperty("firstName") String firstName,
       @JsonProperty("lastName") String lastName,
+      @JsonProperty("age") Integer age,
       @JsonProperty("address") Address address,
       @JsonProperty("offerCategoryPreference") OfferCategory offerCategoryPreference
       ) {
     this.firstName = firstName;
     this.lastName = lastName;
+    this.age = age;
     this.address = address;
     this.offerCategoryPreference = offerCategoryPreference;
   }
@@ -62,6 +64,8 @@ public class Member {
   @NotBlank
   @Size(max = 50)
   private String lastName;
+
+  private Integer age;
 
   @NotNull
   private Address address;
